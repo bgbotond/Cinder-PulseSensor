@@ -51,7 +51,7 @@ int pulsePin = 0;  // pulse sensor purple wire connected to analog pin 0
 
 void setup(){
 pinMode(13,OUTPUT);    // pin 13 will blink to your heartbeat!
-Serial.begin(115200); // we agree to talk fast!
+Serial.begin(57600); // we agree to talk fast!
 // this next bit will wind up in the library. it initializes Timer1 to throw an interrupt every 1mS.
 TCCR1A = 0x00; // DISABLE OUTPUTS AND BREAK PWM ON DIGITAL PINS 9 & 10
 TCCR1B = 0x11; // GO INTO 'PHASE AND FREQUENCY CORRECT' MODE, NO PRESCALER
