@@ -1,0 +1,9 @@
+env = Environment()
+
+env['APP_TARGET'] = 'PulseSensorTestApp'
+env['APP_SOURCES'] = ['PulseSensorTestApp.cpp']
+env['ASSETS'] = ['capture/*xml']
+
+env = SConscript('../../../scons/SConscript', exports = 'env')
+
+SConscript('../../../../../scons/SConscript', exports = 'env')

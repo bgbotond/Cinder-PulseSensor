@@ -1,0 +1,14 @@
+Import('env')
+
+_INCLUDES = [Dir('../src').abspath]
+
+_SOURCES = ['PulseSensor.cpp', 'PulseSensorManager.cpp', 'Recorder.cpp',
+			'Sensor.cpp', 'SensorDevice.cpp', 'SensorFile.cpp', 'Util.cpp']
+_SOURCES = [File('../src/' + s).abspath for s in _SOURCES]
+
+env.Append(APP_SOURCES = _SOURCES)
+env.Append(CPPPATH = _INCLUDES)
+
+env = SConscript('../../MndlKit/scons/SConscript', exports = 'env')
+
+Return('env')
