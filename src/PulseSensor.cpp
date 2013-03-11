@@ -181,7 +181,7 @@ void PulseSensor::draw()
 	if( ! mSensor || ! mSensor->isInited())
 		return;
 
-	if( mVisible && mMonitor && mParams.isVisible() && ! mParams.isIconified())
+	if( mVisible && mMonitor && mParams.isVisible())
 		mMonitor->draw();
 }
 
