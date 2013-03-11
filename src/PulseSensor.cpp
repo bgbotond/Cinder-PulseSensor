@@ -23,6 +23,12 @@ PulseSensor::PulseSensor()
 , mBeatPauseTime( 0 )
 , mSensorName()
 , mDeviceName( NO_DEVICE )
+, mMonitor( 0 )
+, mCardioid()
+, mVisible( false )
+, mFactorX( 0.0f )
+, mFactorY( 0.0f )
+, mOffset( 0 )
 {
 }
 
@@ -38,6 +44,17 @@ void PulseSensor::initParam( const Vec2i &pos )
 	mOutputFileName = "pulsesensor-capture-out" + mSensorName + ".xml";
 	mRecording      = false;
 
+	mCardioid.setup();
+
+	mMonitor = new Monitor( mDeviceName, pos + Vec2i( 300, 0 ), Vec2i( 350, 20 ));
+	mMonitor->AddSection( "Pulse sensor data"                    );
+	mMonitor->AddSection( "BeatPerMinute"    , &mBeatPerMinute   );
+	mMonitor->AddSection( "SensorData"       , &mSensorData      );
+	mMonitor->AddSection( "BeatPauseTimey"   , &mBeatPauseTime   );
+	mMonitor->AddSection( "Cardioid"                             );
+	mMonitor->AddSection( "Data"             , mCardioid.getFbo());
+	addCallback<Cardioid>( MT_SensorData, &Cardioid::addData, &mCardioid );
+
 	mParams = mndl::kit::params::PInterfaceGl( mSensorName, Vec2i( 230, 120 ), pos );
 	mParams.addPersistentSizeAndPosition();
 
@@ -47,6 +64,11 @@ void PulseSensor::initParam( const Vec2i &pos )
 	mParams.addText( "Recorder" );
 	mParams.addParam( "OutputFileName", &mOutputFileName, "", false );
 	mParams.addParam( "Recording"     , &mRecording     , "", false );
+	mParams.addText( "Cardioid" );
+	mParams.addPersistentParam( "Visible", &mVisible, true );
+	mParams.addPersistentParam( "FactorX", &mFactorX, mCardioid.getFactorX(), "min=0.01 max=1.0 step=0.05", false );
+	mParams.addPersistentParam( "FactorY", &mFactorY, mCardioid.getFactorY(), "min=0.01 max=1.0 step=0.05", false );
+	mParams.addPersistentParam( "Offset" , &mOffset , mCardioid.getOffset() , "min=0    max=900 step=10  ", false );
 }
 
 void PulseSensor::updateParam()
@@ -58,6 +80,15 @@ void PulseSensor::updateParam()
 		else
 			stopRecording();
 	}
+
+	if( mCardioid.getFactorX() != mFactorX )
+		mCardioid.setFactorX( mFactorX );
+
+	if( mCardioid.getFactorY() != mFactorY )
+		mCardioid.setFactorY( mFactorY );
+
+	if( mCardioid.getOffset() != mOffset )
+		mCardioid.setOffset( mOffset );
 }
 
 bool PulseSensor::init( const string &deviceName, int baudRate )
@@ -71,6 +102,8 @@ bool PulseSensor::init( const string &deviceName, int baudRate )
 
 		mSensor = sensorDevice;
 		mDeviceName = mSensor->getName();
+		if( mMonitor )
+			mMonitor->setName( mDeviceName );
 		return true;
 	}
 	else
@@ -92,6 +125,8 @@ bool PulseSensor::init( const string &fileName )
 
 		mSensor = sensorFile;
 		mDeviceName = mSensor->getName();
+		if( mMonitor )
+			mMonitor->setName( mDeviceName );
 		return true;
 	}
 	else
@@ -108,6 +143,8 @@ bool PulseSensor::deinit()
 		return false;
 
 	mDeviceName = NO_DEVICE;
+	if( mMonitor )
+		mMonitor->setName( mDeviceName );
 	delete mSensor;
 	mSensor = 0;
 
@@ -137,6 +174,31 @@ void PulseSensor::update()
 	}
 
 	updateParam();
+}
+
+void PulseSensor::draw()
+{
+	if( ! mSensor || ! mSensor->isInited())
+		return;
+
+	if( mVisible && mMonitor && mParams.isVisible() && ! mParams.isIconified())
+		mMonitor->draw();
+}
+
+bool PulseSensor::mouseDown( MouseEvent event )
+{
+	if( mMonitor )
+		return mMonitor->mouseDown( event );
+
+	return false;
+}
+
+bool PulseSensor::mouseDrag( MouseEvent event )
+{
+	if( mMonitor )
+		return mMonitor->mouseDrag( event );
+
+	return false;
 }
 
 int PulseSensor::getBeatPerMinute()

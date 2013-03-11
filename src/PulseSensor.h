@@ -3,6 +3,8 @@
 #include "cinder/Xml.h"
 
 #include "mndlkit/params/PParams.h"
+#include "Monitor/Monitor.h"
+#include "Monitor/Cardioid.h"
 #include "Sensor.h"
 #include "Recorder.h"
 #include "Listener.h"
@@ -30,6 +32,10 @@ public:
 
 	void setup( const std::string &sensorName, const ci::Vec2i &pos );
 	void update();
+	void draw();
+
+	bool mouseDown( ci::app::MouseEvent event );
+	bool mouseDrag( ci::app::MouseEvent event );
 
 	int  getBeatPerMinute();
 	int  getSensorData();
@@ -64,6 +70,13 @@ protected:
 	int                       mSensorData;
 	int                       mBeatPauseTime;
 	Listener                  mListener;
+
+	Monitor                  *mMonitor;
+	Cardioid                  mCardioid;
+	bool                      mVisible;
+	float                     mFactorX;
+	float                     mFactorY;
+	int                       mOffset;
 
 	// params
 	mndl::kit::params::PInterfaceGl mParams;

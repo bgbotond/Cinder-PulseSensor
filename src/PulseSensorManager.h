@@ -13,6 +13,10 @@ public:
 
 	void setup();
 	void update();
+	void draw();
+
+	bool mouseDown( ci::app::MouseEvent event );
+	bool mouseDrag( ci::app::MouseEvent event );
 
 	template<typename T>
 	void addCallback( int device, PulseSensor::MessageType messageType, void (T::* callbackFunction)( int value ), T* callbackObject )

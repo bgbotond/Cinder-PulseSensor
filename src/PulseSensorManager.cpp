@@ -89,4 +89,34 @@ void PulseSensorManager::update()
 	}
 }
 
+void PulseSensorManager::draw()
+{
+	for( int i = 0; i < PULSE_SENSOR_COUNT; ++i )
+	{
+		mPulseSensors[i].draw();
+	}
+}
+
+bool PulseSensorManager::mouseDown( MouseEvent event )
+{
+	for( int i = 0; i < PULSE_SENSOR_COUNT; ++i )
+	{
+		if( mPulseSensors[i].mouseDown( event ) )
+			return true;
+	}
+
+	return false;
+}
+
+bool PulseSensorManager::mouseDrag( MouseEvent event )
+{
+	for( int i = 0; i < PULSE_SENSOR_COUNT; ++i )
+	{
+		if( mPulseSensors[i].mouseDrag( event ) )
+			return true;
+	}
+
+	return false;
+}
+
 } // namespace HeartRate
