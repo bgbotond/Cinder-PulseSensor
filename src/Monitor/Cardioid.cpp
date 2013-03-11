@@ -76,7 +76,8 @@ void Cardioid::_updateFbo()
 {
 	mFbo.bindFramebuffer();
 
-	gl::setMatricesWindow( Vec2i( FBO_WIDTH, FBO_HEIGHT ));
+	gl::setViewport( mFbo.getBounds());
+	gl::setMatricesWindow( mFbo.getSize());
 	gl::clear( Color::black());
 
 	if( getVisible())
