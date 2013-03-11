@@ -27,6 +27,12 @@ void Cardioid::addData( int data )
 	_updateFbo();
 }
 
+void Cardioid::clear()
+{
+	mData.clear();
+	_updateFbo();
+}
+
 const float Cardioid::getFactorX()
 {
 	return mFactorX;
@@ -80,14 +86,16 @@ void Cardioid::_updateFbo()
 	gl::setMatricesWindow( mFbo.getSize());
 	gl::clear( Color::black());
 
-	if( getVisible())
+	int size = (int)mData.size();
+
+	if( getVisible() && size != 0 )
 	{
 		gl::color( ColorA( 1, 1, 1, 0.8f ));
 
 		int width  = mFbo.getWidth();
 		int height = mFbo.getHeight();
 		float unitSize = (float)width / ( width * mFactorX );
-		unitSize = math<float>::min( math<float>::max( unitSize, 1.0f ), (float)width );
+		unitSize = math<float>::clamp( unitSize, 1.0f, (float)width );
 		float posX     = (float)width;
 		float posY     = (float)height;
 		Vec2f posPrev;
@@ -95,7 +103,6 @@ void Cardioid::_updateFbo()
 
 		glLineWidth( 2.0 );
 
-		int size = (int)mData.size();
 		int pos = size - 1;
 		while( posX > 0 && pos >= 0 )
 		{

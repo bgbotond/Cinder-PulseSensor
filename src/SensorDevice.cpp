@@ -59,8 +59,8 @@ void SensorDevice::getMessage( char &type, std::string &data )
 	{
 		type = (char) mSerial.readByte();
 		data = mSerial.readStringUntil( '\n', 0, 0.1 );
-		mSerial.flush();
-		assert( hasMessage() == false );
+// 		mSerial.flush();
+// 		assert( hasMessage() == false );
 	}
 }
 

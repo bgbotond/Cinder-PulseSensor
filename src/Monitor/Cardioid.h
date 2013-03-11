@@ -12,6 +12,7 @@ public:
 	Cardioid();
 
 	void            addData( int data );
+	void            clear();
 
 	const ci::Rectf getRect();
 	void            setRect( const ci::Rectf rect );
@@ -40,7 +41,6 @@ protected:
 
 protected:
 	ci::gl::Fbo       mFbo;
-	ci::Shape2d       mShape;
 	std::vector<int>  mData;
 	ci::Rectf         mRect;
 	float             mFactorX;    // factor to display Data on for x axis

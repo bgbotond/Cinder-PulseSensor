@@ -145,6 +145,7 @@ bool PulseSensor::deinit()
 	mDeviceName = NO_DEVICE;
 	if( mMonitor )
 		mMonitor->setName( mDeviceName );
+	mCardioid.clear();
 	delete mSensor;
 	mSensor = 0;
 
@@ -181,7 +182,7 @@ void PulseSensor::draw()
 	if( ! mSensor || ! mSensor->isInited())
 		return;
 
-	if( mVisible && mMonitor && mParams.isVisible())
+	if( mVisible && mMonitor && mParams.isVisible() /*&& ! mParams.isIconified()*/)
 		mMonitor->draw();
 }
 
