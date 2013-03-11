@@ -46,7 +46,7 @@ void PulseSensor::initParam( const Vec2i &pos )
 
 	mCardioid.setup();
 
-	mMonitor = new Monitor( mDeviceName, pos + Vec2i( 300, 0 ), Vec2i( 350, 20 ));
+	mMonitor = new Monitor( mDeviceName, pos + Vec2i( 300, 0 ), Vec2i( 350, 300 ));
 	mMonitor->AddSection( "Pulse sensor data"                    );
 	mMonitor->AddSection( "BeatPerMinute"    , &mBeatPerMinute   );
 	mMonitor->AddSection( "SensorData"       , &mSensorData      );

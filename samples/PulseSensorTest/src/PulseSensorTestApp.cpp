@@ -1,6 +1,6 @@
 #include "cinder/app/AppBasic.h"
-#include "cinder/params/Params.h"
 
+#include "mndlkit/params/PParams.h"
 #include "PulseSensorManager.h"
 
 using namespace ci;
@@ -13,8 +13,11 @@ class PulseSensorTestApp : public AppBasic
 public:
 	void prepareSettings( Settings *settings );
 	void setup();
+	void shutdown();
 
 	void keyDown( KeyEvent event );
+	void mouseDown( MouseEvent event );
+	void mouseDrag( MouseEvent event );
 
 	void update();
 	void draw();
@@ -29,7 +32,7 @@ private:
 
 	float mColor;
 
-	params::InterfaceGl mParams;
+	mndl::kit::params::PInterfaceGl mParams;
 	float mFps;
 };
 
@@ -53,8 +56,17 @@ void PulseSensorTestApp::setup()
 void PulseSensorTestApp::initParams()
 {
 	// params
-	mParams = params::InterfaceGl( "Debug", Vec2i( 170, 80 ) );
+	mndl::kit::params::PInterfaceGl::load( "params.xml" );
+
+	mParams = mndl::kit::params::PInterfaceGl( "Debug", Vec2i( 170, 80 ), Vec2i( 20, 20 ) );
+	mParams.addPersistentSizeAndPosition();
+
 	mParams.addParam( "Fps", &mFps, "", false );
+}
+
+void PulseSensorTestApp::shutdown()
+{
+	mndl::kit::params::PInterfaceGl::save();
 }
 
 void PulseSensorTestApp::keyDown( KeyEvent event )
@@ -80,7 +92,7 @@ void PulseSensorTestApp::keyDown( KeyEvent event )
 		break;
 	case KeyEvent::KEY_s:
 		{
-			mParams.show( !mParams.isVisible() );
+			mndl::kit::params::PInterfaceGl::showAllParams( !mParams.isVisible() );
 			if ( isFullScreen() )
 			{
 				if ( mParams.isVisible() )
@@ -98,6 +110,16 @@ void PulseSensorTestApp::keyDown( KeyEvent event )
 	}
 }
 
+void PulseSensorTestApp::mouseDown( MouseEvent event )
+{
+	mPulseSensorManager.mouseDown( event );
+}
+
+void PulseSensorTestApp::mouseDrag( MouseEvent event )
+{
+	mPulseSensorManager.mouseDrag( event );
+}
+
 void PulseSensorTestApp::update()
 {
 	mColor *= .98f;
@@ -108,9 +130,11 @@ void PulseSensorTestApp::update()
 void PulseSensorTestApp::draw()
 {
 	gl::clear( Color::gray( mColor ) );
-	gl::setMatricesWindow( getWindowSize() );
+	gl::setMatricesWindow( getWindowSize());
 
-	params::InterfaceGl::draw();
+	mPulseSensorManager.draw();
+
+	mndl::kit::params::PInterfaceGl::draw();
 }
 
 void PulseSensorTestApp::beat( int data )
