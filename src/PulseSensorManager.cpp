@@ -42,7 +42,7 @@ void PulseSensorManager::initParams()
 		mAllNames.push_back( *it );
 	}
 
-	mParams = mndl::kit::params::PInterfaceGl( "PulseSensorManager", Vec2i( 200, 120 ), Vec2i( 20, 120 ) );
+	mParams = mndl::params::PInterfaceGl( "PulseSensorManager", Vec2i( 200, 120 ), Vec2i( 20, 120 ) );
 	mParams.addPersistentSizeAndPosition();
 
 	mParams.addText( "Available devices" );

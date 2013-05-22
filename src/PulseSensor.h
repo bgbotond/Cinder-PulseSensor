@@ -79,8 +79,8 @@ protected:
 	int                       mOffset;
 
 	// params
-	mndl::kit::params::PInterfaceGl mParams;
-	// recordnig
+	mndl::params::PInterfaceGl mParams;
+	// recording
 	std::string               mOutputFileName;
 	bool                      mRecording;
 	std::string               mDeviceName;

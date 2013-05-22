@@ -55,7 +55,7 @@ void PulseSensor::initParam( const Vec2i &pos )
 	mMonitor->AddSection( "Data"             , mCardioid.getFbo());
 	addCallback<Cardioid>( MT_SensorData, &Cardioid::addData, &mCardioid );
 
-	mParams = mndl::kit::params::PInterfaceGl( mSensorName, Vec2i( 230, 120 ), pos );
+	mParams = mndl::params::PInterfaceGl( mSensorName, Vec2i( 230, 120 ), pos );
 	mParams.addPersistentSizeAndPosition();
 
 	// debug

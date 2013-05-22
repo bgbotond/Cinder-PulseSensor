@@ -37,7 +37,7 @@ protected:
 	PulseSensor mPulseSensors[PULSE_SENSOR_COUNT];
 
 	// available devices
-	mndl::kit::params::PInterfaceGl mParams;
+	mndl::params::PInterfaceGl mParams;
 	std::vector<std::string>        mDeviceNames;
 	std::vector<std::string>        mFileNames;
 	std::vector<std::string>        mAllNames;
