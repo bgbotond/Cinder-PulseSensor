@@ -160,6 +160,7 @@ void Cardioid::setup()
 {
 	gl::Fbo::Format format;
 	format.enableDepthBuffer( false );
+	format.setSamples( 8 );
 
 	mFbo = gl::Fbo( FBO_WIDTH, FBO_HEIGHT, format ); 
 
