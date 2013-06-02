@@ -12,10 +12,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\MndlKit\src\mndlkit\params\PParams.h" />
+    <ClInclude Include="..\..\..\src\Cardioid.h" />
     <ClInclude Include="..\..\..\src\Listener.h" />
-    <ClInclude Include="..\..\..\src\Monitor\Cardioid.h" />
-    <ClInclude Include="..\..\..\src\Monitor\Monitor.h" />
-    <ClInclude Include="..\..\..\src\Monitor\Section.h" />
     <ClInclude Include="..\..\..\src\PulseSensor.h" />
     <ClInclude Include="..\..\..\src\PulseSensorManager.h" />
     <ClInclude Include="..\..\..\src\Recorder.h" />
@@ -25,10 +23,8 @@
     <ClInclude Include="..\..\..\src\Util.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\MndlKit\src\PParams.cpp" />
-    <ClCompile Include="..\..\..\src\Monitor\Cardioid.cpp" />
-    <ClCompile Include="..\..\..\src\Monitor\Monitor.cpp" />
-    <ClCompile Include="..\..\..\src\Monitor\Section.cpp" />
+    <ClCompile Include="..\..\..\..\MndlKit\src\mndlkit\params\PParams.cpp" />
+    <ClCompile Include="..\..\..\src\Cardioid.cpp" />
     <ClCompile Include="..\..\..\src\PulseSensor.cpp" />
     <ClCompile Include="..\..\..\src\PulseSensorManager.cpp" />
     <ClCompile Include="..\..\..\src\Recorder.cpp" />

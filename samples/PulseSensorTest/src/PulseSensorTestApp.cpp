@@ -16,8 +16,6 @@ public:
 	void shutdown();
 
 	void keyDown( KeyEvent event );
-	void mouseDown( MouseEvent event );
-	void mouseDrag( MouseEvent event );
 
 	void update();
 	void draw();
@@ -32,7 +30,7 @@ private:
 
 	float mColor;
 
-	mndl::kit::params::PInterfaceGl mParams;
+	mndl::params::PInterfaceGl mParams;
 	float mFps;
 };
 
@@ -56,9 +54,9 @@ void PulseSensorTestApp::setup()
 void PulseSensorTestApp::initParams()
 {
 	// params
-	mndl::kit::params::PInterfaceGl::load( "params.xml" );
+	mndl::params::PInterfaceGl::load( "params.xml" );
 
-	mParams = mndl::kit::params::PInterfaceGl( "Debug", Vec2i( 170, 80 ), Vec2i( 20, 20 ) );
+	mParams = mndl::params::PInterfaceGl( "Debug", Vec2i( 170, 80 ), Vec2i( 20, 20 ) );
 	mParams.addPersistentSizeAndPosition();
 
 	mParams.addParam( "Fps", &mFps, "", false );
@@ -66,7 +64,7 @@ void PulseSensorTestApp::initParams()
 
 void PulseSensorTestApp::shutdown()
 {
-	mndl::kit::params::PInterfaceGl::save();
+	mndl::params::PInterfaceGl::save();
 }
 
 void PulseSensorTestApp::keyDown( KeyEvent event )
@@ -92,7 +90,7 @@ void PulseSensorTestApp::keyDown( KeyEvent event )
 		break;
 	case KeyEvent::KEY_s:
 		{
-			mndl::kit::params::PInterfaceGl::showAllParams( !mParams.isVisible() );
+			mndl::params::PInterfaceGl::showAllParams( !mParams.isVisible() );
 			if ( isFullScreen() )
 			{
 				if ( mParams.isVisible() )
@@ -110,16 +108,6 @@ void PulseSensorTestApp::keyDown( KeyEvent event )
 	}
 }
 
-void PulseSensorTestApp::mouseDown( MouseEvent event )
-{
-	mPulseSensorManager.mouseDown( event );
-}
-
-void PulseSensorTestApp::mouseDrag( MouseEvent event )
-{
-	mPulseSensorManager.mouseDrag( event );
-}
-
 void PulseSensorTestApp::update()
 {
 	mColor *= .98f;
@@ -134,7 +122,7 @@ void PulseSensorTestApp::draw()
 
 	mPulseSensorManager.draw();
 
-	mndl::kit::params::PInterfaceGl::draw();
+	mParams.draw();
 }
 
 void PulseSensorTestApp::beat( int data )

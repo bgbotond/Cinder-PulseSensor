@@ -22,9 +22,6 @@
     <Filter Include="blocks\PulseSensor">
       <UniqueIdentifier>{52e673e5-8a58-4baf-a356-eba80a7609e3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="blocks\PulseSensor\Monitor">
-      <UniqueIdentifier>{83d08ad3-3e89-4c9f-b94d-af8c1cfa472c}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\Listener.h">
@@ -54,14 +51,8 @@
     <ClInclude Include="..\..\..\..\MndlKit\src\mndlkit\params\PParams.h">
       <Filter>blocks\mndlkit</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Monitor\Cardioid.h">
-      <Filter>blocks\PulseSensor\Monitor</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\Monitor\Monitor.h">
-      <Filter>blocks\PulseSensor\Monitor</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\Monitor\Section.h">
-      <Filter>blocks\PulseSensor\Monitor</Filter>
+    <ClInclude Include="..\..\..\src\Cardioid.h">
+      <Filter>blocks\PulseSensor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -89,17 +80,11 @@
     <ClCompile Include="..\..\..\src\Util.cpp">
       <Filter>blocks\PulseSensor</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\MndlKit\src\PParams.cpp">
+    <ClCompile Include="..\..\..\..\MndlKit\src\mndlkit\params\PParams.cpp">
       <Filter>blocks\mndlkit</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\Monitor\Cardioid.cpp">
-      <Filter>blocks\PulseSensor\Monitor</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\Monitor\Monitor.cpp">
-      <Filter>blocks\PulseSensor\Monitor</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\Monitor\Section.cpp">
-      <Filter>blocks\PulseSensor\Monitor</Filter>
+    <ClCompile Include="..\..\..\src\Cardioid.cpp">
+      <Filter>blocks\PulseSensor</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
