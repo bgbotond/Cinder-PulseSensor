@@ -36,7 +36,7 @@ protected:
 	int               mDataMaxLength;
 
 	float             mFactor;     // factor to display Data on for y axis
-	int               mOffset;     // offset to display Data on for y axis
+	float             mOffset;     // offset to display Data on for y axis
 	int               mMinDataHeight;
 	float             mSmoothData;
 };

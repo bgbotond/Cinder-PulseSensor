@@ -83,7 +83,7 @@ void Cardioid::smoothData()
 	}
 	else
 	{
-		mOffset = ci::lerp<int>  ( mOffset, offsetNew, mSmoothData );
+		mOffset = ci::lerp<float>  ( mOffset, offsetNew, mSmoothData );
 		mFactor = ci::lerp<float>( mFactor, factorNew, mSmoothData );
 	}
 }
