@@ -121,7 +121,7 @@ void Cardioid::updateFbo()
 
 	gl::setViewport( mFbo.getBounds());
 	gl::setMatricesWindow( mFbo.getSize(), false );
-	gl::clear( Color::black());
+	gl::clear( ColorA( 0.f, 0.f, 0.f, 0.f ) );
 	gl::color( Color::white());
 
 	unsigned int dataLength = mData.size();

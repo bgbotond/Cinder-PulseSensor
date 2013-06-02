@@ -154,6 +154,11 @@ ci::gl::Fbo *PulseSensor::getFbo()
 	return mCardioid.getFbo();
 }
 
+ci::gl::Texture PulseSensor::getPulseTexture()
+{
+	return mCardioid.getFbo()->getTexture();
+}
+
 int PulseSensor::getBeatPerMinute()
 {
 	return mBeatPerMinute;

@@ -9,7 +9,7 @@ namespace HeartRate
 class Cardioid
 {
 public:
-	static const int FBO_WIDTH  = 512;
+	static const int FBO_WIDTH  = 256;
 	static const int FBO_HEIGHT = 128;
 
 public:

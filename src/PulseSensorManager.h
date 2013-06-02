@@ -24,6 +24,8 @@ public:
 		mPulseSensors[device].addCallback<T>( messageType, callbackFunction, callbackObject );
 	}
 
+	PulseSensor &getSensor( int device ) { return mPulseSensors[ device ]; }
+
 protected:
 	void initParams();
 	void drawFboTest( int sensor );

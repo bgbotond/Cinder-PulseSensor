@@ -40,6 +40,7 @@ public:
 	void  setSmoothData( float smoothData );
 	float getSmoothData() const;
 	ci::gl::Fbo *getFbo();
+	ci::gl::Texture getPulseTexture();
 
 	int  getBeatPerMinute();
 	int  getSensorData();
