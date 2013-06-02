@@ -17,82 +17,37 @@ const string PulseSensor::NO_DEVICE = "no device";
 PulseSensor::PulseSensor()
 : mSensor( 0 )
 , mRecorder()
-, mRecording( false )
 , mBeatPerMinute( 0 )
 , mSensorData( 0 )
 , mBeatPauseTime( 0 )
 , mSensorName()
 , mDeviceName( NO_DEVICE )
-, mMonitor( 0 )
-, mCardioid()
-, mVisible( false )
-, mFactorX( 0.0f )
-, mFactorY( 0.0f )
-, mOffset( 0 )
 {
 }
 
-void PulseSensor::setup( const std::string &sensorName, const Vec2i &pos )
+void PulseSensor::setup( const std::string &sensorName )
 {
 	mSensorName = sensorName;
 
-	initParam( pos );
-}
-
-void PulseSensor::initParam( const Vec2i &pos )
-{
-	mOutputFileName = "pulsesensor-capture-out" + mSensorName + ".xml";
-	mRecording      = false;
-
 	mCardioid.setup();
-
-	mMonitor = new Monitor( mDeviceName, pos + Vec2i( 300, 0 ), Vec2i( 350, 300 ));
-	mMonitor->AddSection( "Pulse sensor data"                    );
-	mMonitor->AddSection( "BeatPerMinute"    , &mBeatPerMinute   );
-	mMonitor->AddSection( "SensorData"       , &mSensorData      );
-	mMonitor->AddSection( "BeatPauseTimey"   , &mBeatPauseTime   );
-	mMonitor->AddSection( "Cardioid"                             );
-	mMonitor->AddSection( "Data"             , mCardioid.getFbo());
-	addCallback<Cardioid>( MT_SensorData, &Cardioid::addData, &mCardioid );
-
-	mParams = mndl::params::PInterfaceGl( mSensorName, Vec2i( 230, 120 ), pos );
-	mParams.addPersistentSizeAndPosition();
-
-	// debug
-	mParams.addText( "Device" );
-	mParams.addParam( "DeviceName"     , &mDeviceName, "", true );
-	mParams.addText( "Recorder" );
-	mParams.addParam( "OutputFileName", &mOutputFileName, "", false );
-	mParams.addParam( "Recording"     , &mRecording     , "", false );
-	mParams.addText( "Cardioid" );
-	mParams.addPersistentParam( "Visible", &mVisible, true );
-	mParams.addPersistentParam( "FactorX", &mFactorX, mCardioid.getFactorX(), "min=0.01 max=1.0 step=0.05", false );
-	mParams.addPersistentParam( "FactorY", &mFactorY, mCardioid.getFactorY(), "min=0.01 max=1.0 step=0.05", false );
-	mParams.addPersistentParam( "Offset" , &mOffset , mCardioid.getOffset() , "min=0    max=900 step=10  ", false );
+	addCallback< Cardioid >( MT_SensorData, &Cardioid::addData, &mCardioid );
 }
 
-void PulseSensor::updateParam()
+const std::string& PulseSensor::getSensorName() const
 {
-	if( isRecording() != mRecording )
-	{
-		if( mRecording )
-			startRecording( mOutputFileName );
-		else
-			stopRecording();
-	}
+	return mSensorName;
+}
 
-	if( mCardioid.getFactorX() != mFactorX )
-		mCardioid.setFactorX( mFactorX );
-
-	if( mCardioid.getFactorY() != mFactorY )
-		mCardioid.setFactorY( mFactorY );
-
-	if( mCardioid.getOffset() != mOffset )
-		mCardioid.setOffset( mOffset );
+const std::string& PulseSensor::getDeviceName() const
+{
+	return mDeviceName;
 }
 
 bool PulseSensor::init( const string &deviceName, int baudRate )
 {
+	stopRecording();
+	mCardioid.clear();
+
 	SensorDevice *sensorDevice = new SensorDevice();
 
 	if( sensorDevice->init( deviceName, baudRate ))
@@ -102,8 +57,6 @@ bool PulseSensor::init( const string &deviceName, int baudRate )
 
 		mSensor = sensorDevice;
 		mDeviceName = mSensor->getName();
-		if( mMonitor )
-			mMonitor->setName( mDeviceName );
 		return true;
 	}
 	else
@@ -116,6 +69,9 @@ bool PulseSensor::init( const string &deviceName, int baudRate )
 
 bool PulseSensor::init( const string &fileName )
 {
+	stopRecording();
+	mCardioid.clear();
+
 	SensorFile *sensorFile = new SensorFile();
 
 	if( sensorFile->init( fileName ))
@@ -125,8 +81,6 @@ bool PulseSensor::init( const string &fileName )
 
 		mSensor = sensorFile;
 		mDeviceName = mSensor->getName();
-		if( mMonitor )
-			mMonitor->setName( mDeviceName );
 		return true;
 	}
 	else
@@ -142,9 +96,9 @@ bool PulseSensor::deinit()
 	if( ! mSensor )
 		return false;
 
+	stopRecording();
+
 	mDeviceName = NO_DEVICE;
-	if( mMonitor )
-		mMonitor->setName( mDeviceName );
 	mCardioid.clear();
 	delete mSensor;
 	mSensor = 0;
@@ -173,33 +127,31 @@ void PulseSensor::update()
 			console() << "Timeout while reading input from serial device!" << endl;
 		}
 	}
-
-	updateParam();
 }
 
-void PulseSensor::draw()
+void PulseSensor::setMinDataHeight( int minDataHeight )
 {
-	if( ! mSensor || ! mSensor->isInited())
-		return;
-
-	if( mVisible && mMonitor && mParams.isVisible() /*&& ! mParams.isIconified()*/)
-		mMonitor->draw();
+	mCardioid.setMinDataHeight( minDataHeight );
 }
 
-bool PulseSensor::mouseDown( MouseEvent event )
+int PulseSensor::getMinDataHeight() const
 {
-	if( mMonitor )
-		return mMonitor->mouseDown( event );
-
-	return false;
+	return mCardioid.getMinDataHeight();
 }
 
-bool PulseSensor::mouseDrag( MouseEvent event )
+void PulseSensor::setSmoothData( float smoothData )
 {
-	if( mMonitor )
-		return mMonitor->mouseDrag( event );
+	mCardioid.setSmoothData( smoothData );
+}
 
-	return false;
+float PulseSensor::getSmoothData() const
+{
+	return mCardioid.getSmoothData();
+}
+
+ci::gl::Fbo *PulseSensor::getFbo()
+{
+	return mCardioid.getFbo();
 }
 
 int PulseSensor::getBeatPerMinute()
@@ -230,11 +182,20 @@ void PulseSensor::startRecording( const std::string &fileName )
 
 void PulseSensor::stopRecording()
 {
+	if( mSensor == 0 )
+		return;
+
+	if( ! isRecording())
+		return;
+
 	mRecorder.stopRecording();
 }
 
 bool PulseSensor::isRecording()
 {
+	if( mSensor == 0 )
+		return false;
+
 	return mRecorder.isRecording();
 }
 

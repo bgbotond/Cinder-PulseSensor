@@ -3,11 +3,10 @@
 #include "cinder/Xml.h"
 
 #include "mndlkit/params/PParams.h"
-#include "Monitor/Monitor.h"
-#include "Monitor/Cardioid.h"
 #include "Sensor.h"
 #include "Recorder.h"
 #include "Listener.h"
+#include "Cardioid.h"
 
 namespace HeartRate
 {
@@ -26,16 +25,21 @@ public:
 public:
 	PulseSensor();
 
+	const std::string& getSensorName() const;
+	const std::string& getDeviceName() const;
+
 	bool init( const std::string &deviceName, int baudRate );
 	bool init( const std::string &fileName                 );
 	bool deinit();
 
-	void setup( const std::string &sensorName, const ci::Vec2i &pos );
+	void setup( const std::string &sensorName );
 	void update();
-	void draw();
 
-	bool mouseDown( ci::app::MouseEvent event );
-	bool mouseDrag( ci::app::MouseEvent event );
+	void setMinDataHeight( int minDataHeight );
+	int  getMinDataHeight() const;
+	void  setSmoothData( float smoothData );
+	float getSmoothData() const;
+	ci::gl::Fbo *getFbo();
 
 	int  getBeatPerMinute();
 	int  getSensorData();
@@ -59,30 +63,16 @@ protected:
 	MessageType  convertCharToMessageType( const char        messageId   );
 	char         convertMessageTypeToChar( const MessageType messageType );
 
-	void         initParam( const ci::Vec2i &pos );
-	void         updateParam();
-
 protected:
 	std::string               mSensorName;
 	Sensor                   *mSensor;
+	Cardioid                  mCardioid;
 	Recorder                  mRecorder;
 	int                       mBeatPerMinute;
 	int                       mSensorData;
 	int                       mBeatPauseTime;
 	Listener                  mListener;
 
-	Monitor                  *mMonitor;
-	Cardioid                  mCardioid;
-	bool                      mVisible;
-	float                     mFactorX;
-	float                     mFactorY;
-	int                       mOffset;
-
-	// params
-	mndl::params::PInterfaceGl mParams;
-	// recording
-	std::string               mOutputFileName;
-	bool                      mRecording;
 	std::string               mDeviceName;
 };
 
